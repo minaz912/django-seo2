@@ -21,7 +21,10 @@ class MetadataNode(template.Node):
 
     def render(self, context):
         try:
-            target = self.target.resolve(context)
+            if 'view' in context:
+                target = self.target.resolve(context['view'])
+            else:
+                target = self.target.resolve(context)
         except VariableDoesNotExist:
             msg = ("{% get_metadata %} needs some path information.\n"
                    "Please use RequestContext with the django.core.context_"
